@@ -1,22 +1,26 @@
 import requests
 import json
 import os
+from dotenv import load_dotenv
 
-ARQUIVO = 'favoritos.json'
+load_dotenv()
+
+ARQUIVO = "favoritos.json"
+API_KEY = os.getenv("API_KEY")
 
 def carregar_favoritos():
     if os.path.exists(ARQUIVO):
-        with open(ARQUIVO, 'r', encoding='utf-8') as f:
+        with open(ARQUIVO, "r", encoding="utf-8") as f:
             return json.load(f)
     return []
 
 def salvar_favoritos(favoritos):
-    with open(ARQUIVO, 'w', encoding='utf-8') as f:
+    with open(ARQUIVO, "w", encoding="utf-8") as f:
         json.dump(favoritos, f, indent=4, ensure_ascii=False)
 
 def buscar_animal(nome):
     url = f"https://api.api-ninjas.com/v1/animals?name={nome}"
-    headers = {"X-Api-Key": "X7azIJYItHHO5JzML7FoAlJv3KMuaj4UW34tX2x0"}
+    headers = {"X-Api-Key": API_KEY}
     resposta = requests.get(url, headers=headers)
     
     if resposta.status_code == 200 and resposta.json():
@@ -66,4 +70,4 @@ def menu():
             print("Até mais!")
             break
 
-menu() 
+menu()
