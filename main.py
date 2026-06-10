@@ -24,7 +24,27 @@ def buscar_animal(nome):
     resposta = requests.get(url, headers=headers)
     
     if resposta.status_code == 200 and resposta.json():
-        return resposta.json()[0]
+        animais = resposta.json()
+        print(f"\nEncontrei {len(animais)} resultado(s) para '{nome}':")
+        
+        inicio = 0
+        while inicio < len(animais):
+            for i, a in enumerate(animais[inicio:inicio+5]):
+                print(f"{inicio+i+1} - {a['name']}")
+            
+            if inicio + 5 < len(animais):
+                opcao = input("\nDigite o número do animal ou ENTER pra ver mais: ")
+            else:
+                opcao = input("\nDigite o número do animal: ")
+            
+            if opcao.strip() == "":
+                inicio += 5
+            else:
+                escolha = int(opcao) - 1
+                return animais[escolha]
+        
+        print("Nenhum animal selecionado.")
+        return None
     return None
 
 def exibir_animal(animal):
